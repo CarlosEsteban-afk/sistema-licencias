@@ -1,0 +1,19 @@
+{
+  "name": "consumer-tests",
+  "version": "1.0.0",
+  "description": "Tests",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+    },
+  "dependencies": {
+    "@pact-foundation/pact": "^15.0.1",
+    "axios": "^1.12.2"
+  },
+  "devDependencies": {
+    "jest": "^30.1.3"
+  }
+}
