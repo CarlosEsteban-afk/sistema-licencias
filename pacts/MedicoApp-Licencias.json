@@ -1,0 +1,87 @@
+{
+  "consumer": {
+    "name": "MedicoApp"
+  },
+  "interactions": [
+    {
+      "description": "a request to create a valid license",
+      "providerState": "issued license days>0 is creatable",
+      "request": {
+        "body": {
+          "days": 7,
+          "diagnosis": "cough",
+          "doctorId": "D-123",
+          "patientId": "11111111-1",
+          "startDate": "2025-09-20"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "path": "/licenses"
+      },
+      "response": {
+        "body": {
+          "days": 7,
+          "diagnosis": "cough",
+          "doctorId": "D-123",
+          "folio": "L-1001",
+          "patientId": "11111111-1",
+          "startDate": "2025-09-20T00:00:00.000Z",
+          "status": "issued"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "$.body.folio": {
+            "match": "type"
+          }
+        },
+        "status": 201
+      }
+    },
+    {
+      "description": "a request to create an invalid license",
+      "providerState": "ready to receive invalid license",
+      "request": {
+        "body": {
+          "days": 0,
+          "diagnosis": "cough",
+          "doctorId": "D-123",
+          "patientId": "11111111-1",
+          "startDate": "2025-09-20"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "path": "/licenses"
+      },
+      "response": {
+        "body": {
+          "error": "INVALID_DAYS"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 400
+      }
+    }
+  ],
+  "metadata": {
+    "pact-js": {
+      "version": "15.0.1"
+    },
+    "pactRust": {
+      "ffi": "0.4.28",
+      "models": "1.3.5"
+    },
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  },
+  "provider": {
+    "name": "Licencias"
+  }
+}

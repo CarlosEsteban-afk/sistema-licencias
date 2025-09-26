@@ -1,0 +1,75 @@
+services:
+  db_licencias:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: licuser
+      POSTGRES_PASSWORD: licpass
+      POSTGRES_DB: licencias
+    ports:
+      - "5433:5432"
+
+  licencias:
+    build: ./licencias
+    working_dir: /app 
+    environment:
+      DATABASE_URL: "postgresql://licuser:licpass@db_licencias:5432/licencias"
+    depends_on:
+      - db_licencias
+    ports:
+      - "3001:3000"
+
+  portal-paciente:
+    build: ./portal-paciente
+    environment:
+      LICENCIAS_URL: http://licencias:3000
+    depends_on:
+      - licencias
+    ports:
+      - "3002:3000"
+
+  validador-aseguradora:
+    build: ./validador-aseguradora
+    environment:
+      LICENCIAS_URL: http://licencias:3000
+    depends_on:
+      - licencias
+    ports:
+      - "3003:3000"
+
+  consumer-tests-medico:
+    build: ./consumer-tests
+    working_dir: /app 
+    volumes:
+      - ./pacts:/app/pacts
+    command: ["npx", "jest", "tests/medicoAppLicencias.test.js"]
+    depends_on:
+      - licencias
+
+  consumer-tests-portal:
+    build: ./consumer-tests
+    working_dir: /app
+    volumes:
+      - ./pacts:/app/pacts
+    command: ["npx", "jest", "tests/portalPacienteLicencias.test.js"]
+    depends_on:
+      - licencias
+
+  consumer-tests-validador:
+    build: ./consumer-tests
+    working_dir: /app
+    volumes:
+      - ./pacts:/app/pacts
+    command: ["npx", "jest", "tests/validadorLicencias.test.js"]
+    depends_on:
+      - licencias
+
+  verify-licencias:
+    build: ./verify-licencias
+    working_dir: /app
+    environment:
+      DATABASE_URL: "postgresql://licuser:licpass@db_licencias:5432/licencias"
+    volumes:
+      - ./pacts:/app/pacts
+      - ./licencias:/app/licencias
+    depends_on:
+      - licencias
