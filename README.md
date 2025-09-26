@@ -11,7 +11,9 @@ El sistema está compuesto por los siguientes servicios en Docker:
 - **licencias** → Proveedor principal (API de licencias).  
 - **portal-paciente** → API que consume licencias.  
 - **validador-aseguradora** → Servicio que valida licencias con el proveedor.  
-- **medico-app** → Consumidor que interactúa con licencias.  
+- **consumer-tests-medico** → Generador de archivos pact usando Jest.  
+- **consumer-tests-portal** → Generador de archivos pact usando Jest.  
+- **consumer-tests-validador** → Generador de archivos pact usando Jest.  
 - **verify-licencias** → Servicio de verificación Pact que asegura la compatibilidad entre consumidores y el proveedor.
 
 ---
@@ -112,3 +114,10 @@ docker compose run --rm verify-licencias
 12 directories, 31 files
 
 ```
+
+## Principales desafios
+
+Dentro de los desafios más complejos se encuentra la utilizacion de docker para crear y conectar los servicios.<br>
+Entender las pruebas de contrato fue complicado ya que son un estilo distinto de probar las cosas.<br>
+Pact tenia muchas manereas de implementarse, existian muchas formas distintas de llegar al mismo resultado, 
+trabajando con mis compañeros cada uno tenia una version disitnta de llegar al mismo resultado.
