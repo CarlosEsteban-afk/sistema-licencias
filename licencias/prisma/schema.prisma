@@ -1,0 +1,19 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model License {
+  folio      String   @id
+  patientId  String
+  doctorId   String
+  diagnosis  String?
+  startDate  DateTime
+  days       Int
+  status     String
+}
+
